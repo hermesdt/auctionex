@@ -2,7 +2,7 @@ defmodule AuctionAppWeb.AuthController do
     use AuctionAppWeb, :controller
     import IEx
     alias AuctionApp.Models.User
-    
+
     plug Ueberauth
 
     def callback(conn = %{assigns: assigns = %{ueberauth_auth: _auth}}, _) do
@@ -35,4 +35,3 @@ defmodule AuctionAppWeb.AuthController do
       conn.assigns.ueberauth_auth.info.name
     end
   end
-  

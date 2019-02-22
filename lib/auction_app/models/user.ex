@@ -1,11 +1,15 @@
 defmodule AuctionApp.Models.User do
+  @moduledoc """
+  The user model of the application
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
   import Logger
 
-  alias AuctionApp.Repo, as: Repo
   alias AuctionApp.Models.User, as: User
+  alias AuctionApp.Repo, as: Repo
 
   schema "users" do
     field :email, :string
@@ -22,13 +26,14 @@ defmodule AuctionApp.Models.User do
     Repo.one(query)
   end
 
-  def create_if_not_exists(%User{} = user) do
+  def create_if_not_exists(user = %User{}) do
     case User.find_by(:email, user.email) do
       user when not is_nil(user) ->
         Logger.info("user #{user.email} already exists in the DB, returning it")
         {:ok, user}
       nil ->
-        User.changeset(user, %{})
+        user
+        |> User.changeset(%{})
         |> Repo.insert
     end
   end

@@ -5,10 +5,11 @@ defmodule AuctionApp.UserTest do
 
   alias AuctionApp.Models.User
   alias AuctionApp.Repo
+  alias Ecto.Adapters.SQL.Sandbox
 
   setup do
     # Explicitly get a connection before each test
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
+    :ok = Sandbox.checkout(Repo)
   end
 
   describe "given user alvaro@gmail.com already exists on the DB" do
@@ -30,7 +31,10 @@ defmodule AuctionApp.UserTest do
   end
 
   defp create_user(attrs) do
-    user = struct(User, attrs) |> User.changeset(%{})
+    user = User
+    |> struct(attrs)
+    |> User.changeset(%{})
+
     Repo.insert(user)
   end
 end
