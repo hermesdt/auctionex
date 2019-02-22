@@ -10,7 +10,8 @@ defmodule AuctionApp.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: Coverex.Task, coveralls: true]
     ]
   end
 
@@ -20,7 +21,7 @@ defmodule AuctionApp.MixProject do
   def application do
     [
       mod: {AuctionApp.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :ueberauth_google]
     ]
   end
 
@@ -42,7 +43,12 @@ defmodule AuctionApp.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:ueberauth_google, "~> 0.8"},
+      {:envy, "~> 1.1.1"},
+      {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
+      {:exvcr, "~> 0.10", only: :test},
+      {:coverex, "~> 1.4.10", only: :test}
     ]
   end
 

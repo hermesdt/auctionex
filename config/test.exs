@@ -9,6 +9,8 @@ config :auction_app, AuctionAppWeb.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
+config :oauth2, debug: true
+
 # Configure your database
 config :auction_app, AuctionApp.Repo,
   username: "postgres",
