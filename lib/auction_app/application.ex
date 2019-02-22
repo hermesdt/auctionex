@@ -6,6 +6,8 @@ defmodule AuctionApp.Application do
   use Application
 
   def start(_type, _args) do
+    load_env()
+    
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository
@@ -27,5 +29,10 @@ defmodule AuctionApp.Application do
   def config_change(changed, _new, removed) do
     AuctionAppWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  defp load_env do
+    Envy.load([".env"])
+    Envy.reload_config
   end
 end

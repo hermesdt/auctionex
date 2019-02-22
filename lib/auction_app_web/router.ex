@@ -19,8 +19,23 @@ defmodule AuctionAppWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/auth", AuctionAppWeb do
+    pipe_through :browser
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", AuctionAppWeb do
   #   pipe_through :api
   # end
+
+  defp assign_current_user(conn, _) do
+    with user_id when not is_nil(user_id) <- get_session(conn, :user_id) do
+      "as"
+    else
+      _ -> :error
+    end
+  end
 end
