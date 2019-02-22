@@ -7,7 +7,7 @@ defmodule AuctionApp.Application do
 
   def start(_type, _args) do
     load_env()
-    
+
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository

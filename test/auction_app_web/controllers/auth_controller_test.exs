@@ -34,9 +34,7 @@ defmodule AuctionAppWeb.AuthControllerTest do
     conn
     |> assign(:ueberauth_auth, @ueberauth_auth)
     |> get("/auth/google/callback")
-    
 
     assert User.find_by(:email, @ueberauth_auth.info.email)
   end
 end
-  

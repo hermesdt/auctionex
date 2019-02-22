@@ -48,7 +48,8 @@ defmodule AuctionApp.MixProject do
       {:envy, "~> 1.1.1"},
       {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
       {:exvcr, "~> 0.10", only: :test},
-      {:coverex, "~> 1.4.10", only: :test}
+      {:coverex, "~> 1.4.10", only: :test},
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
     ]
   end
 

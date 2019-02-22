@@ -14,6 +14,7 @@ defmodule AuctionAppWeb.ConnCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox
 
   using do
     quote do
@@ -27,10 +28,10 @@ defmodule AuctionAppWeb.ConnCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(AuctionApp.Repo)
+    :ok = Sandbox.checkout(AuctionApp.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(AuctionApp.Repo, {:shared, self()})
+      Sandbox.mode(AuctionApp.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}
