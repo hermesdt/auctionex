@@ -9,7 +9,7 @@ defmodule AuctionAppWeb.AuthController do
       {:ok, user} = create_user(conn)
 
       conn
-        |> put_session(:current_user, user)
+        |> put_session(:user_id, user.id)
         |> put_status(201)
         |> text("Hello")
     end

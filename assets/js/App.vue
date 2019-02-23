@@ -1,16 +1,26 @@
 <template>
-  <div id="app">
-    <h1>{{ msg }}</h1>
+  <div class="container">
+    <div class="row">
+      <nav-bar class="col s12"></nav-bar>
+    </div>
+    <div class="row">
+      <h1 class="col s12">{{ msg }}</h1>
+    </div>
   </div>
 </template>
 
 <script>
+import Navbar from './Navbar.vue'
+
 export default {
   name: 'app',
   data () {
     return {
       msg: 'Welcome to Your Vue.js & Phoenix & GraphQL App'
     }
+  },
+  components: {
+    'nav-bar': Navbar
   }
 }
 </script>
