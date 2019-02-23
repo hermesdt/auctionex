@@ -3,7 +3,7 @@ defmodule AuctionAppWeb.MeController do
 
   def index(conn, _params) do
     current_user = conn.assigns[:current_user]
-    require IEx; IEx.pry
+
     conn
     |> json(current_user)
   end
