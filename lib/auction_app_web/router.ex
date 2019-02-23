@@ -7,6 +7,7 @@ defmodule AuctionAppWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :assign_current_user
   end
 
   pipeline :api do
@@ -17,6 +18,7 @@ defmodule AuctionAppWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/me", MeController, :index
   end
 
   scope "/auth", AuctionAppWeb do
@@ -32,10 +34,13 @@ defmodule AuctionAppWeb.Router do
   # end
 
   defp assign_current_user(conn, _) do
+    alias AuctionApp.Models.User
     with user_id when not is_nil(user_id) <- get_session(conn, :user_id) do
-      "as"
+      user = User.find_by(:id, user_id)
+      conn
+      |> assign(:current_user, user)
     else
-      _ -> :error
+      _ -> conn
     end
   end
 end

@@ -11,6 +11,7 @@ defmodule AuctionApp.Models.User do
   alias AuctionApp.Models.User, as: User
   alias AuctionApp.Repo, as: Repo
 
+  @derive {Jason.Encoder, only: [:email, :name]}
   schema "users" do
     field :email, :string
     field :name, :string
