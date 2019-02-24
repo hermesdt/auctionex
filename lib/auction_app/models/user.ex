@@ -6,7 +6,7 @@ defmodule AuctionApp.Models.User do
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
-  import Logger
+  require Logger
 
   alias AuctionApp.Models.User, as: User
   alias AuctionApp.Repo, as: Repo

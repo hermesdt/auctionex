@@ -1,4 +1,9 @@
 defmodule AuctionAppWeb.Plugs.Authentication do
+  @moduledoc """
+  Module holding the logic for authentication.
+  This functions can be used as plugs direcly.
+  """
+
   import Plug.Conn
 
   alias AuctionApp.Models.User
@@ -10,7 +15,7 @@ defmodule AuctionAppWeb.Plugs.Authentication do
       conn
     else
       conn
-      |> put_status(411)
+      |> send_resp(401, "")
       |> halt()
     end
   end

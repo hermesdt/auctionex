@@ -36,7 +36,7 @@ defmodule AuctionAppWeb.Plugs.AuthenticationTest do
       conn = conn(:get, "/")
       |> login_required!([])
 
-      assert conn.status == 411
+      assert conn.status == 401
       assert conn.halted
     end
 
