@@ -4,24 +4,32 @@
       <nav-bar class="col s12"></nav-bar>
     </div>
     <div class="row">
-      <h1 class="col s12">{{ msg }}</h1>
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
+import VueRouter from 'vue-router'
 import Navbar from './Navbar.vue'
+import Landing from './Landing.vue'
+import AuctionsIndex from './auctions/Index.vue'
+
+const routes = [
+    {
+        path: '/', component: Landing,
+        path: '/auctions', component: AuctionsIndex
+    },
+]
+
+const router = new VueRouter({ routes })
 
 export default {
   name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js & Phoenix & GraphQL App'
-    }
-  },
   components: {
     'nav-bar': Navbar
-  }
+  },
+  router
 }
 </script>
 
@@ -32,7 +40,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 h1, h2 {
   font-weight: normal;
