@@ -9,9 +9,8 @@ defmodule AuctionAppWeb.AuthController do
       {:ok, user} = create_user(conn)
 
       conn
-        |> put_session(:user_id, user.id)
-        |> put_status(201)
-        |> text("Hello")
+      |> put_session(:user_id, user.id)
+      |> redirect(to: "/")
     end
 
     def callback(conn = %{assigns: %{ueberauth_failure: failure}}, _) do

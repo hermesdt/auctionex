@@ -18,11 +18,14 @@ import "phoenix_html"
 
 import Vue from "vue"
 import VueResource from 'vue-resource'
+import VueRouter from 'vue-router'
+
 Vue.use(VueResource);
+Vue.use(VueRouter);
 
 import App from './App.vue'
 
-new Vue({
+window.app = new Vue({
     el: '#app',
     render: h => h(App)
 })
