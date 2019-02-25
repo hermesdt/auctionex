@@ -15,6 +15,11 @@ defmodule AuctionAppWeb.AuthControllerTest do
     provider: :google
   }
 
+  @ueberauth_failure %{
+    some_error: :big_error,
+    provider: :google
+  }
+
   setup do
     ExVCR.Config.cassette_library_dir("fixture/vcr_cassettes/auth")
     :ok
@@ -36,5 +41,13 @@ defmodule AuctionAppWeb.AuthControllerTest do
     |> get("/auth/google/callback")
 
     assert User.find_by(:email, @ueberauth_auth.info.email)
+  end
+
+  test "GET /auth/google/callback with error", %{conn: conn} do
+    conn = conn
+    |> assign(:ueberauth_failure, @ueberauth_failure)
+    |> get("/auth/google/callback")
+
+    assert conn.resp_body =~ "Something went wrong"
   end
 end

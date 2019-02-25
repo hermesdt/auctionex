@@ -14,7 +14,7 @@ defmodule AuctionAppWeb.AuthController do
     end
 
     def callback(conn = %{assigns: %{ueberauth_failure: failure}}, _) do
-      text(conn, "Something went wrong #{inspect(failure)} -- #{conn.assigns[:is_logged_in]}")
+      text(conn, "Something went wrong #{inspect(failure)}")
     end
 
     defp create_user(conn) do
