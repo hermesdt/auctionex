@@ -11,7 +11,8 @@ defmodule AuctionApp.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      test_coverage: [tool: Coverex.Task, coveralls: true]
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [coveralls: :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test]
     ]
   end
 
@@ -48,7 +49,7 @@ defmodule AuctionApp.MixProject do
       {:envy, "~> 1.1.1"},
       {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
       {:exvcr, "~> 0.10", only: :test},
-      {:coverex, "~> 1.4.10", only: :test},
+      {:excoveralls, "~> 0.10", only: :test},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
     ]
   end

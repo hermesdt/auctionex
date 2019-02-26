@@ -11,14 +11,9 @@ defmodule AuctionAppWeb.Router do
     plug :assign_current_user
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   scope "/", AuctionAppWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
     get "/me", MeController, :index
   end
 
