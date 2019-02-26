@@ -6,7 +6,7 @@
         <div class="col s12">
             <div class="row">
                 <router-link to="auctions" class="col s3 btn" id="look-for-auctions">Auctions</router-link>
-                <router-link to="my-auctions" class="col s3 btn">My auctions</router-link>
+                <router-link to="my-auctions" class="col s3 offset-s2 btn">My auctions</router-link>
             </div>
         </div>
     </div>

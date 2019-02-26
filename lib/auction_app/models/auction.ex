@@ -4,6 +4,7 @@ defmodule AuctionApp.Models.Auction do
   import Ecto.Query
 
   alias AuctionApp.Models.Auction
+  alias AuctionApp.Models.User
   alias AuctionApp.Repo
 
   @derive {Jason.Encoder, only: [:title, :description, :errors]}

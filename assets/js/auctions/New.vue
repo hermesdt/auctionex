@@ -3,9 +3,9 @@
     <div class="col s12">
       <div cass="row">
         <div class="input-field col s12">
-          <input placeholder="Placeholder" id="title" type="text" class="validate">
+          <input v-model="title" placeholder="Placeholder" id="title" type="text" class="validate">
           <label for="title">Title</label>
-          <span v-for="(error, index) in errors.title" :key="index" class="helper-text" data-error="wrong" data-success="right">
+          <span v-for="(error, index) in errors.title" :key="index" class="helper-text" data-error="wrong">
             {{ error }}
           </span>
         </div>
@@ -15,9 +15,9 @@
     <div class="col s12">
       <div class="row">
         <div class="input-field col s12">
-          <textarea id="description" class="materialize-textarea"></textarea>
+          <textarea v-model="description" id="description" class="materialize-textarea"></textarea>
           <label for="description">Description</label>
-          <span v-for="(error, index) in errors.description" :key="index" class="helper-text" data-error="wrong" data-success="right">
+          <span v-for="(error, index) in errors.description" :key="index" class="helper-text" data-error="wrong">
             {{ error }}
           </span>
         </div>
@@ -27,7 +27,7 @@
     <div class="col s12">
       <div class="row">
         <div class="col s12">
-          <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+          <button v-on:click="submit()" class="btn waves-effect waves-light" type="submit" name="action">Submit
             <i class="material-icons right">send</i>
           </button>
         </div>
@@ -43,16 +43,22 @@ export default {
   name: "auctions-new",
   data () {
     return {
-      errors: { title: [], description: [] }
+      errors: { title: [], description: [] },
+      title: null,
+      description: null
     }
   },
-  mounted () {
-    Vue.http.post("/auctions")
-    .then(()  => {
-
-    }, ({errors}) => {
-
-    })
+  methods: {
+    submit: function () {
+      console.log("this", this)
+      var data = { title: this.title, description: this.description }
+      return Vue.http.post("/auctions", { auction: data })
+      .then((response)  => {
+        this.errors = { title: [], description: []}
+      }, (error) => {
+        this.errors = error.body.errors
+      })
+    }
   }
 }
 </script>
