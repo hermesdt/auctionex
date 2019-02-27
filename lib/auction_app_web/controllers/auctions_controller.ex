@@ -13,32 +13,52 @@ defmodule AuctionAppWeb.AuctionsController do
   end
 
   def show(conn, %{"id" => id}) do
-    conn
-    |> json(%{ auctions: Auction.get!(id) })
+    Auction.get(id)
+    |> case do
+      nil ->
+        conn
+        |> send_resp(404, "")
+      auction ->
+        conn
+        |> json(%{ auction: Auction.get!(id) })
+    end
   end
 
   def create(conn, %{"auction" => auction_data}) do
     Map.put(auction_data, "user_id", conn.assigns.current_user.id)
-    |> Auction.create!
+    |> Auction.create
     |> case do
       {:ok, auction} ->
         conn
         |> send_resp(201, "")
       {:error, %Ecto.Changeset{} = changeset} ->
-        conn
-        |> put_status(400)
-        |> json(%{
-            errors:
-              Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
-          })
+        response_with_errors(conn, changeset)
     end
   end
 
   def delete(conn, _) do
-
   end
 
-  def update(conn, _) do
+  def update(conn, %{"auction" => auction_data, "id" => id}) do
+    update_fn = fn(data, id) -> Auction.update(id, data) end
 
+    Map.put(auction_data, "user_id", conn.assigns.current_user.id)
+    |> update_fn.(id)
+    |> case do
+      {:ok, auction} ->
+        conn
+        |> send_resp(200, "")
+      {:error, %Ecto.Changeset{} = changeset} ->
+        response_with_errors(conn, changeset)
+    end
+  end
+
+  defp response_with_errors(conn, %Ecto.Changeset{} = changeset) do
+    conn
+    |> put_status(400)
+    |> json(%{
+        errors:
+          Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
+      })
   end
 end

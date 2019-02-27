@@ -7,7 +7,7 @@ defmodule AuctionApp.Models.Auction do
   alias AuctionApp.Models.User
   alias AuctionApp.Repo
 
-  @derive {Jason.Encoder, only: [:title, :description, :errors]}
+  @derive {Jason.Encoder, only: [:id, :title, :description]}
   schema "auctions" do
     field :description, :string
     field :title, :string
@@ -16,16 +16,24 @@ defmodule AuctionApp.Models.Auction do
     timestamps()
   end
 
+  def get(id), do: Repo.get(Auction, id)
   def get!(id), do: Repo.get!(Auction, id)
 
-  def create!(attrs) do
+  def update(id, attrs) do
+    Auction.get!(id)
+    |> changeset(attrs)
+    |> Repo.update
+  end
+
+  def create(attrs) do
     %Auction{}
     |> changeset(attrs)
     |> Repo.insert
   end
 
   def all do
-    query = from a in Auction
+    query = from a in Auction,
+      order_by: a.id
     Repo.all(query)
   end
 
