@@ -3,6 +3,9 @@
     <div class="row">
       <nav-bar class="col s12"></nav-bar>
     </div>
+
+    <div v-if="flash.info">{{ flash.info }}</div>
+
     <breadcrumbs />
     <router-view></router-view>
   </div>
@@ -17,6 +20,7 @@ import AuctionsList from './auctions/List.vue'
 import AuctionsNew from './auctions/New.vue'
 import AuctionsEdit from './auctions/Edit.vue'
 import AuctionsShow from './auctions/Show.vue'
+import globals from './globals'
 
 const routes = [
   { path: '/', component: Landing, name: 'home' },
@@ -42,7 +46,12 @@ export default {
   components: {
     'nav-bar': Navbar
   },
-  router
+  router,
+  computed: {
+    flash: function() {
+      return globals.flash
+    }
+  }
 }
 </script>
 

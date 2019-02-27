@@ -31,6 +31,7 @@ export default {
             return Vue.http.put(`/auctions/${this.auction.id}`, { auction: data })
             .then((response)  => {
                 this.errors = { title: [], description: []}
+                this.$router.push(`/auctions/${this.auction.id}`)
             }, (error) => {
                 this.errors = error.body.errors
             })

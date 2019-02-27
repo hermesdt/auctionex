@@ -20,6 +20,7 @@ import Vue from "vue"
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import VueBreadcrumbs from 'vue-breadcrumbs'
+import globals from './globals'
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
@@ -33,6 +34,18 @@ Vue.use(VueBreadcrumbs, {
     '<span v-if="key != $breadcrumbs.length - 1">&nbsp;/&nbsp;</span>' +
     '</router-link> ' +
     '</nav>'
+});
+
+Vue.http.interceptors.push(function() {
+    return function(response) {
+        var {'x-flash': flash} =  response.headers.map
+        if (!flash) return
+
+        flash = JSON.parse(flash)
+        Object.keys(flash).forEach(function(key){
+            window.M.toast({html: flash[key]})
+        })
+    }
 });
 
 import App from './App.vue'
