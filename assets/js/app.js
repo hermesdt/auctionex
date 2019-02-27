@@ -19,9 +19,21 @@ import "phoenix_html"
 import Vue from "vue"
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
+import VueBreadcrumbs from 'vue-breadcrumbs'
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
+Vue.use(VueBreadcrumbs, {
+    template: '<nav class="breadcrumb" v-if="$breadcrumbs.length"> ' +
+    '<span>&nbsp;/&nbsp;</span>' +
+    '<router-link to="/">Home</router-link>' +
+    '<span>&nbsp;/&nbsp;</span>' +
+    '<router-link class="breadcrumb-item" v-for="(crumb, key) in $breadcrumbs" :to="linkProp(crumb)" :key="key">' +
+    '{{ crumb | crumbText }}' +
+    '<span v-if="key != $breadcrumbs.length - 1">&nbsp;/&nbsp;</span>' +
+    '</router-link> ' +
+    '</nav>'
+});
 
 import App from './App.vue'
 

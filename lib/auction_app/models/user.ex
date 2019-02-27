@@ -10,12 +10,14 @@ defmodule AuctionApp.Models.User do
 
   alias AuctionApp.Models.User, as: User
   alias AuctionApp.Repo, as: Repo
+  alias AuctionApp.Models.Auction
 
-  @derive {Jason.Encoder, only: [:email, :name]}
+  @derive {Jason.Encoder, only: [:email, :name, :id]}
   schema "users" do
     field :email, :string
     field :name, :string
 
+    has_many :auctions, Auction
     timestamps()
   end
 
@@ -33,6 +35,12 @@ defmodule AuctionApp.Models.User do
         Logger.info("user #{user.email} already exists in the DB, returning it")
         {:ok, user}
       nil ->
+        user = with name when is_nil(name) <- user.name do
+          Map.put(user, :name, String.split(user.email, "@") |> Enum.at(0))
+        else
+          _ -> user
+        end
+
         user
         |> User.changeset(%{})
         |> Repo.insert

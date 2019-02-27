@@ -14,7 +14,11 @@ defmodule AuctionAppWeb.Router do
   scope "/", AuctionAppWeb do
     pipe_through :browser
 
+    get "/", HomeController, :index
     get "/me", MeController, :index
+
+    resources "/auctions", AuctionsController,
+      only: [:index, :show, :create, :update, :delete]
   end
 
   scope "/auth", AuctionAppWeb do

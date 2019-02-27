@@ -4,13 +4,14 @@
       <span class="greeting">welcome {{name}}</span>
     </div>
     <div class="row" v-else>
-      <a href="/auth/google" class="btn col s12 m2 pull-m1">Login</a>
+      <a href="/auth/google" class="btn col s12 m2 offset-m10">Login</a>
     </div>
   </div>
 </template>
 
 <script>
-  import Vue from "vue"
+  import Vue from 'vue'
+  import globals from './globals'
 
   export default {
     name: "Navbar",
@@ -25,6 +26,7 @@
       .then((response)  => {
         this.is_logged_in = true
         this.name = response.body.name
+        globals.userId = response.body.id
       })
     }
   }
@@ -32,7 +34,6 @@
 
 <style lang="scss">
 .nav-bar {
-  padding: 0.5em 0;
   background: black;
 
   .greeting {

@@ -1,6 +1,5 @@
 defmodule AuctionAppWeb.AuthController do
     use AuctionAppWeb, :controller
-    import IEx
     alias AuctionApp.Models.User
 
     plug Ueberauth
