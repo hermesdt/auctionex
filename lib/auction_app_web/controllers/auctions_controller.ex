@@ -29,6 +29,7 @@ defmodule AuctionAppWeb.AuctionsController do
       {:ok, auction} ->
         conn
         |> put_status(201)
+        |> put_flash_header(:info, "Auction created successfully")
         |> json(%{ auction: auction })
       {:error, %Ecto.Changeset{} = changeset} ->
         response_with_errors(conn, changeset)
@@ -41,6 +42,7 @@ defmodule AuctionAppWeb.AuctionsController do
       true ->
         Auction.delete(auction)
         conn
+        |> put_flash_header(:info, "Auction #{auction.title} deleted")
         |> send_resp(200, "")
       false ->
         send_resp(conn, 401, "")
@@ -54,7 +56,9 @@ defmodule AuctionAppWeb.AuctionsController do
         Auction.update(auction, auction_data)
         |> case do
           {:ok, auction} ->
-            send_resp(conn, 200, "")
+            conn
+            |> put_flash_header(:info, "Auction updated successfully")
+            |> send_resp(200, "")
           {:error, %Ecto.Changeset{} = changeset} ->
             response_with_errors(conn, changeset)
         end
