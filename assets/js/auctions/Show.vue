@@ -2,11 +2,14 @@
     <div class="row auction">
         <div class="col s12">
             <div class="row">
-                <router-link v-if="auction.user_id == $user_id"
+                <router-link v-if="sameUser"
                     :to="editLink(auction.id)"
-                    class="btn">
+                    class="btn col s12 m1">
                     Edit
                 </router-link>
+                <button class="btn red col s12 m1"
+                    v-if="sameUser"
+                    v-on:click="destroy(auction.id)">Delete</button>
             </div>
         </div>
         <div class="col s12 title">
@@ -20,23 +23,36 @@
 
 <script>
 import Vue from 'vue'
+import globals from '../globals'
 
 export default {
     name: "auction",
     data() {
         return {
-            auction: {}
+            auction: {},
         }
     },
-    mounted () {
+    beforeMount () {
         Vue.http.get(`/auctions/${this.$route.params.id}`)
         .then((response)  => {
             this.auction = response.body.auction
         })
     },
+    computed: {
+        sameUser: function() {
+            return this.auction.user_id == globals.userId
+        }
+
+    },
     methods: {
         editLink: function(id) {
             return `/auctions/${id}/edit`
+        },
+        destroy: function(id) {
+            Vue.http.delete(`/auctions/${this.$route.params.id}`)
+            .then((response)  => {
+                this.$router.push('/auctions')
+            })
         }
     }
 }

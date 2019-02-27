@@ -7,11 +7,12 @@ defmodule AuctionApp.Models.Auction do
   alias AuctionApp.Models.User
   alias AuctionApp.Repo
 
-  @derive {Jason.Encoder, only: [:id, :title, :description]}
+  @derive {Jason.Encoder, only: [:id, :title, :description, :user_id]}
   schema "auctions" do
     field :description, :string
     field :title, :string
-    belongs_to :user, User
+
+    belongs_to :user, User, foreign_key: :user_id
 
     timestamps()
   end
@@ -19,16 +20,20 @@ defmodule AuctionApp.Models.Auction do
   def get(id), do: Repo.get(Auction, id)
   def get!(id), do: Repo.get!(Auction, id)
 
-  def update(id, attrs) do
-    Auction.get!(id)
+  def update(auction, attrs) do
+    auction
     |> changeset(attrs)
     |> Repo.update
   end
 
-  def create(attrs) do
-    %Auction{}
+  def create(auction, attrs) do
+    auction
     |> changeset(attrs)
     |> Repo.insert
+  end
+
+  def delete(auction) do
+    auction |> Repo.delete
   end
 
   def all do

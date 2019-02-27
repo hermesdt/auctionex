@@ -20,7 +20,6 @@ import Vue from "vue"
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import VueBreadcrumbs from 'vue-breadcrumbs'
-import VueGlobalVariable from 'vue-global-var'
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
@@ -34,12 +33,6 @@ Vue.use(VueBreadcrumbs, {
     '<span v-if="key != $breadcrumbs.length - 1">&nbsp;/&nbsp;</span>' +
     '</router-link> ' +
     '</nav>'
-});
-
-Vue.use(VueGlobalVariable, {
-    globals: {
-        user_id: null
-    },
 });
 
 import App from './App.vue'

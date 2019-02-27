@@ -19,7 +19,11 @@ defmodule AuctionAppWeb.MeControllerTest do
       |> get("/me")
       |> (fn(conn) -> Jason.decode(conn.resp_body) end).()
 
-      assert json == %{"email" => "alvaro@gmail.com", "name" => "alvaro"}
+      assert json == %{
+        "email" => "alvaro@gmail.com",
+        "name" => "alvaro",
+        "id" => user.id
+      }
     end
   end
 end

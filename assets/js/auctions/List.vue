@@ -23,7 +23,6 @@ export default {
         }
     },
     mounted () {
-        console.log(this.$router)
       Vue.http.get("/auctions")
       .then((response)  => {
         this.auctions = response.body.auctions

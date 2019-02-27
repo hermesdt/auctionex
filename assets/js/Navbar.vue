@@ -10,7 +10,8 @@
 </template>
 
 <script>
-  import Vue from "vue"
+  import Vue from 'vue'
+  import globals from './globals'
 
   export default {
     name: "Navbar",
@@ -25,6 +26,7 @@
       .then((response)  => {
         this.is_logged_in = true
         this.name = response.body.name
+        globals.userId = response.body.id
       })
     }
   }

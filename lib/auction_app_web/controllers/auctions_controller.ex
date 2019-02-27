@@ -16,40 +16,51 @@ defmodule AuctionAppWeb.AuctionsController do
     Auction.get(id)
     |> case do
       nil ->
-        conn
-        |> send_resp(404, "")
+        send_resp(conn, 404, "")
       auction ->
-        conn
-        |> json(%{ auction: Auction.get!(id) })
+        json(conn, %{ auction: Auction.get!(id) })
     end
   end
 
   def create(conn, %{"auction" => auction_data}) do
-    Map.put(auction_data, "user_id", conn.assigns.current_user.id)
-    |> Auction.create
+    Ecto.build_assoc(conn.assigns.current_user, :auctions)
+    |> Auction.create(auction_data)
     |> case do
       {:ok, auction} ->
         conn
-        |> send_resp(201, "")
+        |> put_status(201)
+        |> json(%{ auction: auction })
       {:error, %Ecto.Changeset{} = changeset} ->
         response_with_errors(conn, changeset)
     end
   end
 
-  def delete(conn, _) do
+  def delete(conn, %{"id" => id}) do
+    auction = Auction.get(id)
+    case not is_nil(auction) and auction.user_id == conn.assigns.current_user.id do
+      true ->
+        Auction.delete(auction)
+        conn
+        |> send_resp(200, "")
+      false ->
+        send_resp(conn, 401, "")
+    end
   end
 
   def update(conn, %{"auction" => auction_data, "id" => id}) do
-    update_fn = fn(data, id) -> Auction.update(id, data) end
+    auction = Auction.get(id)
+    case not is_nil(auction) and auction.user_id == conn.assigns.current_user.id do
+      true ->
+        Auction.update(auction, auction_data)
+        |> case do
+          {:ok, auction} ->
+            send_resp(conn, 200, "")
+          {:error, %Ecto.Changeset{} = changeset} ->
+            response_with_errors(conn, changeset)
+        end
+      false ->
+        send_resp(conn, 401, "")
 
-    Map.put(auction_data, "user_id", conn.assigns.current_user.id)
-    |> update_fn.(id)
-    |> case do
-      {:ok, auction} ->
-        conn
-        |> send_resp(200, "")
-      {:error, %Ecto.Changeset{} = changeset} ->
-        response_with_errors(conn, changeset)
     end
   end
 
