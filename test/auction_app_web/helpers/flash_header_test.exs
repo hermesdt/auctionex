@@ -1,4 +1,4 @@
-defmodule AuctionAppWeb.Plugs.AuthenticationTest do
+defmodule AuctionAppWeb.Plugs.FlashHeaderTest do
   use ExUnit.Case, async: true
   use Plug.Test
 
