@@ -8,9 +8,9 @@ defmodule AuctionApp.Models.User do
   import Ecto.Query
   require Logger
 
+  alias AuctionApp.Models.Auction, as: Auction
   alias AuctionApp.Models.User, as: User
   alias AuctionApp.Repo, as: Repo
-  alias AuctionApp.Models.Auction
 
   @derive {Jason.Encoder, only: [:email, :name, :id]}
   schema "users" do
@@ -36,7 +36,9 @@ defmodule AuctionApp.Models.User do
         {:ok, user}
       nil ->
         user = with name when is_nil(name) <- user.name do
-          Map.put(user, :name, String.split(user.email, "@") |> Enum.at(0))
+          user
+          |> Map.put(:name, String.split(user.email, "@"))
+          |> Enum.at(0)
         else
           _ -> user
         end
