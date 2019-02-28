@@ -1,4 +1,11 @@
 defmodule AuctionAppWeb.Helpers.FlashHeader do
+  @moduledoc """
+  Helper to be used to set X-Flash http header.
+
+  This header can be later used by frontend to display alerts, etc.
+  The content of the header is a json as a string.
+  """
+
   import Plug.Conn
 
   def put_flash_header(conn, key, value) do
@@ -13,7 +20,8 @@ defmodule AuctionAppWeb.Helpers.FlashHeader do
   end
 
   def get_flash_header(conn, key) do
-    get_flash_header(conn)
+    conn
+    |> get_flash_header
     |> Map.get(key, nil)
   end
 

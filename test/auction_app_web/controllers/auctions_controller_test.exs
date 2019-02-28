@@ -2,7 +2,7 @@ defmodule AuctionAppWeb.AuctionsControllerTest do
   use AuctionAppWeb.ConnCase
   use Plug.Test
 
-  alias AuctionApp.Models.{User, Auction}
+  alias AuctionApp.Models.{Auction, User}
   alias AuctionApp.Repo
 
   describe "GET /" do
@@ -157,12 +157,16 @@ defmodule AuctionAppWeb.AuctionsControllerTest do
 
   defp create_auctions(%{users: [user1, user2]}) do
     auctions = [
-      Ecto.build_assoc(user1, :auctions)
+      user1
+      |> Ecto.build_assoc(:auctions)
       |> Auction.changeset(%{title: "u1_t1", description: "u1_d1"}),
-      Ecto.build_assoc(user1, :auctions)
+
+      user
+      |> Ecto.build_assoc(:auctions)
       |> Auction.changeset(%{title: "u1_t2", description: "u1_d2"}),
 
-      Ecto.build_assoc(user2, :auctions)
+      user2
+      |> Ecto.build_assoc(:auctions)
       |> Auction.changeset(%{title: "u2_t1", description: "u2_d1"})
     ]
     |> Enum.map(fn(auction) ->

@@ -1,4 +1,8 @@
 defmodule AuctionApp.Models.Auction do
+  @moduledoc """
+  The auction model of the application
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query

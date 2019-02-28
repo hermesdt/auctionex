@@ -3,34 +3,36 @@ defmodule AuctionAppWeb.AuctionsController do
   alias AuctionApp.Models.Auction
 
   import AuctionAppWeb.Plugs.Authentication, [:login_required!]
-  import AuctionAppWeb.ErrorHelpers, [:translate_error/1]
+  import AuctionAppWeb.ErrorHelpers, [:translate_error / 1]
 
   plug :login_required! when action in [:new, :create, :delete, :edit, :update]
 
   def index(conn, _) do
     conn
-    |> json(%{ auctions: Auction.all })
+    |> json(%{auctions: Auction.all})
   end
 
   def show(conn, %{"id" => id}) do
-    Auction.get(id)
+    id
+    |> Auction.get
     |> case do
       nil ->
         send_resp(conn, 404, "")
       auction ->
-        json(conn, %{ auction: Auction.get!(id) })
+        json(conn, %{auction: Auction.get!(id)})
     end
   end
 
   def create(conn, %{"auction" => auction_data}) do
     Ecto.build_assoc(conn.assigns.current_user, :auctions)
-    |> Auction.create(auction_data)
+    auction_data
+    |> Auction.create
     |> case do
       {:ok, auction} ->
         conn
         |> put_status(201)
         |> put_flash_header(:info, "Auction created successfully")
-        |> json(%{ auction: auction })
+        |> json(%{auction: auction})
       {:error, %Ecto.Changeset{} = changeset} ->
         response_with_errors(conn, changeset)
     end
@@ -53,7 +55,8 @@ defmodule AuctionAppWeb.AuctionsController do
     auction = Auction.get(id)
     case not is_nil(auction) and auction.user_id == conn.assigns.current_user.id do
       true ->
-        Auction.update(auction, auction_data)
+        auction
+        |> Auction.update(pauction_data)
         |> case do
           {:ok, auction} ->
             conn
@@ -68,7 +71,7 @@ defmodule AuctionAppWeb.AuctionsController do
     end
   end
 
-  defp response_with_errors(conn, %Ecto.Changeset{} = changeset) do
+  defp response_with_errors(conn, changeset = %Ecto.Changeset{}) do
     conn
     |> put_status(400)
     |> json(%{
