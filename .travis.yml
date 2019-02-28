@@ -10,8 +10,10 @@ install:
 
 stages:
   - test
+  - name: create_git_tag
+    if: branch = automatic-semver
   - name: docker_build
-    if: (tag =~ ^v) AND (branch = automatic-semver)
+    if: tag =~ ^v
   # - deploy
 
 jobs:
@@ -22,5 +24,11 @@ jobs:
     - stage: test
       name: "Credo"
       script: mix credo --strict
+    - stage: create_git_tag
+      script:
+        git config --global credential.helper store &&
+        echo $GIT_CI_CREDENTIALS > $HOME/.git-credentials &&
+        git tag v0.0.0 &&
+        git push origin v0.0.0
     - stage: docker_build
       script: echo "something here to test"
