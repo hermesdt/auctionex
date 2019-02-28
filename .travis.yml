@@ -10,6 +10,9 @@ install:
 
 stages:
   - test
+  - name: docker_build
+    if: (tag =~ ^v) AND (branch = automatic-semver)
+  # - deploy
 
 jobs:
   include:
@@ -19,3 +22,5 @@ jobs:
     - stage: test
       name: "Credo"
       script: mix credo --strict
+    - stage: docker_build
+      script: echo "something here to test"
