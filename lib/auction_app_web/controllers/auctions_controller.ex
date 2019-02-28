@@ -18,15 +18,15 @@ defmodule AuctionAppWeb.AuctionsController do
     |> case do
       nil ->
         send_resp(conn, 404, "")
-      auction ->
+      _auction ->
         json(conn, %{auction: Auction.get!(id)})
     end
   end
 
   def create(conn, %{"auction" => auction_data}) do
-    Ecto.build_assoc(conn.assigns.current_user, :auctions)
-    auction_data
-    |> Auction.create
+    conn.assigns.current_user
+    |> Ecto.build_assoc(:auctions)
+    |> Auction.create(auction_data)
     |> case do
       {:ok, auction} ->
         conn
@@ -56,9 +56,9 @@ defmodule AuctionAppWeb.AuctionsController do
     case not is_nil(auction) and auction.user_id == conn.assigns.current_user.id do
       true ->
         auction
-        |> Auction.update(pauction_data)
+        |> Auction.update(auction_data)
         |> case do
-          {:ok, auction} ->
+          {:ok, _auction} ->
             conn
             |> put_flash_header(:info, "Auction updated successfully")
             |> send_resp(200, "")

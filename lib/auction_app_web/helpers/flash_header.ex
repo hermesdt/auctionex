@@ -19,12 +19,6 @@ defmodule AuctionAppWeb.Helpers.FlashHeader do
     |> put_resp_header("x-flash", json_value)
   end
 
-  def get_flash_header(conn, key) do
-    conn
-    |> get_flash_header
-    |> Map.get(key, nil)
-  end
-
   def get_flash_header(conn) do
    Map.get(conn.private, :flash_header) || %{}
   end

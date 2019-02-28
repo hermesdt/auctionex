@@ -4,7 +4,7 @@ defmodule AuctionAppWeb.AuthController do
 
     plug Ueberauth
 
-    def callback(conn = %{assigns: assigns = %{ueberauth_auth: _auth}}, _) do
+    def callback(conn = %{assigns: %{ueberauth_auth: _auth}}, _) do
       {:ok, user} = create_user(conn)
 
       conn

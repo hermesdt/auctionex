@@ -161,7 +161,7 @@ defmodule AuctionAppWeb.AuctionsControllerTest do
       |> Ecto.build_assoc(:auctions)
       |> Auction.changeset(%{title: "u1_t1", description: "u1_d1"}),
 
-      user
+      user1
       |> Ecto.build_assoc(:auctions)
       |> Auction.changeset(%{title: "u1_t2", description: "u1_d2"}),
 
