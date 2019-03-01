@@ -23,7 +23,7 @@ defmodule AuctionApp.GitTags do
   def last_version do
     get_git_tags()
     |> Tuple.to_list
-    |> Enum.at(0)
+    |> (fn([tags, 0]) -> tags end).()
     |> String.split("\n")
     |> Enum.map(fn(t) ->
         case Regex.run(~r/^"v(\d+\.\d+\.\d+)"$/, t) do
