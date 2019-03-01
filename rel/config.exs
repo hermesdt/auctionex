@@ -50,6 +50,7 @@ release :auction_app do
   set version: current_version(:auction_app)
   set applications: [
     :runtime_tools,
+    :jason
     # compile_and_runtime: :permanent
   ]
   set config_providers: [

@@ -9,7 +9,8 @@ defmodule AuctionApp.GitTags do
   def next_version do
     [major, minor, patch] = last_version()
 
-    next_version = case get_version_type() do
+    next_version = get_version_type()
+    |> case do
       "MAJOR" -> [major + 1, 0, 0]
       "MINOR" -> [major, minor + 1, 0]
       "PATCH" -> [major, minor, patch + 1]

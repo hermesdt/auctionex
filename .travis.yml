@@ -5,6 +5,11 @@ elixir:
 otp_release:
   - '21.2.6'
 
+env:
+  IMAGE_NAME=auctionex
+  IMAGE_TAG=$DOCKER_IMAGE:$TRAVIS_TAG
+  IMAGE_LATEST=$DOCKER_IMAGE:latest
+
 install:
   mix local.rebar --force; mix local.hex --force; mix deps.get
 
@@ -31,4 +36,7 @@ jobs:
         git tag v0.0.0 &&
         git push origin v0.0.0
     - stage: docker_build
-      script: echo "something here to test"
+      script:
+        docker build . -t $IMAGE_TAG -t $IMAGE_LATEST
+        docker push $IMAGE_TAG
+        docker push $IMAGE_LATEST
