@@ -37,6 +37,7 @@ jobs:
         git push origin v0.0.0
     - stage: docker_build
       script:
+        docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
         docker build . -t $IMAGE_TAG -t $IMAGE_LATEST
         docker push $IMAGE_TAG
         docker push $IMAGE_LATEST
