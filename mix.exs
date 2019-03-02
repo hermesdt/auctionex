@@ -50,7 +50,8 @@ defmodule AuctionApp.MixProject do
       {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
       {:exvcr, "~> 0.10", only: :test},
       {:excoveralls, "~> 0.10", only: :test},
-      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
+      {:distillery, "~> 2.0"}
     ]
   end
 

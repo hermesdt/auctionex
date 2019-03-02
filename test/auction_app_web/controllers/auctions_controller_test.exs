@@ -40,7 +40,7 @@ defmodule AuctionAppWeb.AuctionsControllerTest do
 
     test "returns 404 if the id isn't present in the DB", %{conn: conn} do
       %{status: status} = conn
-      |> get("/auctions/1")
+      |> get("/auctions/1000")
 
       assert status == 404
     end

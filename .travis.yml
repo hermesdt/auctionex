@@ -5,7 +5,44 @@ elixir:
 otp_release:
   - '21.2.6'
 
+env:
+  IMAGE_NAME=hermesdt/auctionex
+  IMAGE_TAG=$IMAGE_NAME:$TRAVIS_TAG
+  IMAGE_LATEST=$IMAGE_NAME:latest
+
 install:
   mix local.rebar --force; mix local.hex --force; mix deps.get
-script:
-  mix test --cover
+
+stages:
+  - test
+  - name: create_git_tag
+    if: branch = master
+  - name: docker_build
+    if: tag =~ ^v
+  # - deploy
+
+jobs:
+  include:
+    - stage: test
+      name: "Unit Tests"
+      script: mix test --cover
+    - stage: test
+      name: "Credo"
+      script: mix credo --strict
+    - stage: create_git_tag
+      script:
+        - git config --global credential.helper store
+        - echo $GIT_CI_CREDENTIALS > $HOME/.git-credentials
+        - export NEW_TAG=$(sh bin/next_version.sh)
+        - git tag $NEW_TAG
+        - git push origin $NEW_TAG
+    - stage: docker_build
+      script:
+        - echo "Login in docker $DOCKER_USERNAME"
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - echo "Building images $IMAGE_TAG, $IMAGE_LATEST"
+        - docker build . -t $IMAGE_TAG -t $IMAGE_LATEST
+        - echo "Pushing image $IMAGE_TAG"
+        - docker push $IMAGE_TAG
+        - echo "Pushing image $IMAGE_LATEST"
+        - docker push $IMAGE_LATEST

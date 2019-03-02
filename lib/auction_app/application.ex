@@ -32,7 +32,9 @@ defmodule AuctionApp.Application do
   end
 
   defp load_env do
-    Envy.load([".env"])
-    Envy.reload_config
+    if Mix.env != :prod do
+      Envy.load([".env"])
+      Envy.reload_config
+    end
   end
 end
