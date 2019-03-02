@@ -23,12 +23,12 @@ stages:
 
 jobs:
   include:
-    - stage: test
-      name: "Unit Tests"
-      script: mix test --cover
-    - stage: test
-      name: "Credo"
-      script: mix credo --strict
+    # - stage: test
+    #   name: "Unit Tests"
+    #   script: mix test --cover
+    # - stage: test
+    #   name: "Credo"
+    #   script: mix credo --strict
     - stage: create_git_tag
       script:
         - git config --global credential.helper store
